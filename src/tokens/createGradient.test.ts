@@ -121,8 +121,17 @@ describe('createGradient', () => {
 
   it('creates a solid-colour gradient from one stop', () => {
     expect(createGradient({ type: 'linear', stops: ['red'] })).toBe(
-      'linear-gradient(red)',
+      'linear-gradient(red, red)',
     );
+  });
+
+  it('duplicates a positioned single stop without mutating it', () => {
+    const stop = { colour: 'red', position: '20%' } as const;
+
+    expect(createGradient({ type: 'radial', stops: [stop] })).toBe(
+      'radial-gradient(red 20%, red 20%)',
+    );
+    expect(stop).toEqual({ colour: 'red', position: '20%' });
   });
 
   it('requires at least one stop', () => {

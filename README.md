@@ -106,6 +106,9 @@ Gradient configuration remains typed as strings so the library does not
 duplicate the CSS grammar. This also leaves custom properties and new CSS
 syntax available without requiring library updates.
 
+When one stop is supplied, it is emitted twice to produce a valid solid-colour
+CSS gradient.
+
 ## Borders
 
 Use `createBorder` to create conventional or gradient border declarations. It

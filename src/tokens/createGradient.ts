@@ -28,7 +28,13 @@ export const createGradient = (options: GradientOptions): GradientValue => {
   }
 
   const prelude = createGradientPrelude(options);
-  const values = [prelude, ...options.stops.map(formatGradientStop)].filter(
+  const stops = options.stops.map(formatGradientStop);
+
+  if (stops.length === 1) {
+    stops.push(stops[0]);
+  }
+
+  const values = [prelude, ...stops].filter(
     (value): value is string => value !== undefined,
   );
   const repeating = options.repeating ? 'repeating-' : '';
