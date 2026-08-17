@@ -28,7 +28,7 @@ describe('createSize', () => {
     });
   });
 
-  it('normalizes floating-point noise', () => {
+  it('normalises floating-point noise', () => {
     const size = createSize(1);
 
     expect(size(0.1 + 0.2)).toEqual({ px: '0.3px', rem: '0.3rem' });

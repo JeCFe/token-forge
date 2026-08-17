@@ -5,19 +5,19 @@ import { defineTokens } from './defineTokens.ts';
 
 describe('defineTokens', () => {
   it('returns the token object', () => {
-    const tokens = { color: { primary: '#3366ff' } };
+    const tokens = { colour: { primary: '#3366ff' } };
     expect(defineTokens(tokens)).toBe(tokens);
   });
 
   it('preserves deeply nested token values and their inferred types', () => {
     const tokens = defineTokens({
-      color: { text: { primary: '#111111' } },
+      colour: { text: { primary: '#111111' } },
       spacing: { small: 8, large: '24px' },
     });
 
-    expect(tokens.color.text.primary).toBe('#111111');
+    expect(tokens.colour.text.primary).toBe('#111111');
     expect(tokens.spacing.small).toBe(8);
-    expectTypeOf(tokens.color.text.primary).toEqualTypeOf<string>();
+    expectTypeOf(tokens.colour.text.primary).toEqualTypeOf<string>();
     expectTypeOf(tokens.spacing.small).toEqualTypeOf<number>();
   });
 
@@ -26,9 +26,9 @@ describe('defineTokens', () => {
   });
 
   it('accepts empty nested groups', () => {
-    const tokens = defineTokens({ color: {} });
+    const tokens = defineTokens({ colour: {} });
 
-    expect(tokens).toEqual({ color: {} });
+    expect(tokens).toEqual({ colour: {} });
   });
 
   it('accepts zero as a token value', () => {
@@ -38,11 +38,11 @@ describe('defineTokens', () => {
   });
 
   it('remains mutable after definition', () => {
-    const tokens = defineTokens({ color: { primary: '#3366ff' } });
+    const tokens = defineTokens({ colour: { primary: '#3366ff' } });
 
-    tokens.color.primary = '#ffffff';
+    tokens.colour.primary = '#ffffff';
 
-    expect(tokens.color.primary).toBe('#ffffff');
+    expect(tokens.colour.primary).toBe('#ffffff');
   });
 
   it('supports composing token objects with TypeScript references', () => {

@@ -1,4 +1,5 @@
 import type { Breakpoints } from './types.ts';
+import { requireValue } from '../validation/requireValue.ts';
 
 /**
  * Defines the named breakpoints available to responsive token values.
@@ -11,5 +12,10 @@ import type { Breakpoints } from './types.ts';
  * });
  * ```
  */
-export const defineBreakpoints = <T extends Breakpoints>(breakpoints: T): T =>
-  breakpoints;
+export const defineBreakpoints = <T extends Breakpoints>(breakpoints: T): T => {
+  for (const [name, value] of Object.entries(breakpoints)) {
+    requireValue(value, `breakpoints.${name}`);
+  }
+
+  return breakpoints;
+};

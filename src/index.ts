@@ -2,9 +2,22 @@ export { defineTokens } from './tokens/defineTokens.ts';
 export { defineBreakpoints } from './tokens/defineBreakpoints.ts';
 export { createResponsive } from './tokens/createResponsive.ts';
 export { createSize } from './tokens/createSize.ts';
+export { createGradient } from './tokens/createGradient.ts';
+export { createBorder } from './tokens/createBorder.ts';
 export type {
+  BorderOptions,
+  BorderValue,
   BreakpointValue,
   Breakpoints,
+  ColourBorderOptions,
+  ConicGradientOptions,
+  GradientOptions,
+  GradientBorderOptions,
+  GradientStop,
+  GradientValue,
+  LinearGradientOptions,
+  PositionedGradientStop,
+  RadialGradientOptions,
   ResponsiveValues,
   SizeValue,
   Tokens,

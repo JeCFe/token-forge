@@ -3,12 +3,12 @@ import type { Tokens } from './types.ts';
 /**
  * Defines a design-token object while preserving its inferred shape.
  *
- * This is the recommended way to create values passed to `toCssFile`.
+ * This is the recommended way to create a token collection.
  *
  * @example
  * ```ts
  * const tokens = defineTokens({
- *   color: { primary: '#3366ff' },
+ *   colour: { primary: '#3366ff' },
  *   spacing: { small: '8px' },
  * });
  * ```

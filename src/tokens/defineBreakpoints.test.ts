@@ -14,4 +14,10 @@ describe('defineBreakpoints', () => {
     expect(breakpoints.small).toBe('400px');
     expectTypeOf(breakpoints.medium).toEqualTypeOf<string>();
   });
+
+  it.each(['', '   '])('rejects an empty breakpoint value', (value) => {
+    expect(() => defineBreakpoints({ small: value })).toThrow(
+      new TypeError('breakpoints.small must not be empty.'),
+    );
+  });
 });
