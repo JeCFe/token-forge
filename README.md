@@ -12,7 +12,7 @@ is the value that will be passed to `toCssFile`.
 import { defineTokens } from '@jecfe/token-forge';
 
 const tokens = defineTokens({
-  color: {
+  colour: {
     primary: '#3366ff',
     text: '#111111',
   },
@@ -27,8 +27,8 @@ Nested token names are intended to become CSS custom-property names:
 
 ```css
 :root {
-  --color-primary: #3366ff;
-  --color-text: #111111;
+  --colour-primary: #3366ff;
+  --colour-text: #111111;
   --spacing-small: 8px;
   --spacing-large: 24px;
 }
@@ -41,7 +41,7 @@ useful:
 import type { Tokens } from '@jecfe/token-forge';
 
 const tokens: Tokens = {
-  color: {
+  colour: {
     primary: '#3366ff',
   },
 };
@@ -68,3 +68,41 @@ const sizes = defineTokens({
 sizes['100'].px; // '16px'
 sizes['100'].rem; // '1rem'
 ```
+
+## Gradients
+
+Use `createGradient` to build CSS-ready linear, radial, or conic gradient token
+values. Stops can be plain colours or objects with one or two positions:
+
+```ts
+import { createGradient, defineTokens } from '@jecfe/token-forge';
+
+const tokens = defineTokens({
+  gradient: {
+    hero: createGradient({
+      type: 'linear',
+      direction: '135deg',
+      stops: [
+        { colour: '#3366ff', position: '0%' },
+        { colour: '#8a2be2', position: ['60%', '80%'] },
+        { colour: '#ff1493', position: '100%' },
+      ],
+    }),
+    spotlight: createGradient({
+      type: 'radial',
+      shape: 'circle',
+      position: 'center',
+      stops: ['white', 'transparent'],
+    }),
+  },
+});
+```
+
+Set `repeating: true` to create a repeating gradient. CSS fragments remain
+open-ended, so values such as `var(--colour-primary)`, modern colour functions,
+angles, and keyword positions can be used directly. A gradient must contain at
+least one stop.
+
+Gradient configuration remains typed as strings so the library does not
+duplicate the CSS grammar. This also leaves custom properties and new CSS
+syntax available without requiring library updates.

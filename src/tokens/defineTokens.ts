@@ -8,7 +8,7 @@ import type { Tokens } from './types.ts';
  * @example
  * ```ts
  * const tokens = defineTokens({
- *   color: { primary: '#3366ff' },
+ *   colour: { primary: '#3366ff' },
  *   spacing: { small: '8px' },
  * });
  * ```
