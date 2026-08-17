@@ -5,8 +5,7 @@ Convert TypeScript design-token objects into CSS custom properties.
 ## Recommended usage
 
 Use `defineTokens` when creating tokens. It validates the supported shape at
-compile time and preserves the useful inferred type of the object. The result
-is the value that will be passed to `toCssFile`.
+compile time and preserves the useful inferred type of the object.
 
 ```ts
 import { defineTokens } from '@jecfe/token-forge';
