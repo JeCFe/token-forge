@@ -1,3 +1,4 @@
+import { requireFiniteNumber } from '../validation/requireFiniteNumber.ts';
 import type { SizeValue } from './types.ts';
 
 /** Formats a finite number without floating-point noise or negative zero. */
@@ -10,7 +11,7 @@ const formatNumber = (value: number): `${number}` => {
  * Creates a size helper using the number of pixels equal to one rem.
  *
  * @param pixelsPerRem - A positive number of pixels representing one rem.
- * @returns A helper that accepts non-negative pixel sizes.
+ * @returns A helper that accepts finite positive, zero, or negative pixel sizes.
  *
  * @example
  * ```ts
@@ -22,18 +23,17 @@ const formatNumber = (value: number): `${number}` => {
  * ```
  */
 export const createSize = (pixelsPerRem: number) => {
-  if (!Number.isFinite(pixelsPerRem) || pixelsPerRem <= 0) {
+  const finitePixelsPerRem = requireFiniteNumber(pixelsPerRem, 'pixelsPerRem');
+  if (finitePixelsPerRem <= 0) {
     throw new RangeError('pixelsPerRem must be a positive finite number.');
   }
 
   return (pixels: number): SizeValue => {
-    if (!Number.isFinite(pixels) || pixels < 0) {
-      throw new RangeError('pixels must be a non-negative finite number.');
-    }
+    const finitePixels = requireFiniteNumber(pixels, 'pixels');
 
     return {
-      px: `${formatNumber(pixels)}px`,
-      rem: `${formatNumber(pixels / pixelsPerRem)}rem`,
+      px: `${formatNumber(finitePixels)}px`,
+      rem: `${formatNumber(finitePixels / finitePixelsPerRem)}rem`,
     };
   };
 };
