@@ -68,6 +68,9 @@ sizes['100'].px; // '16px'
 sizes['100'].rem; // '1rem'
 ```
 
+Size inputs may be positive, zero, or negative. The configured pixel-to-rem
+base must remain positive.
+
 ## Gradients
 
 Use `createGradient` to build CSS-ready linear, radial, or conic gradient token
@@ -145,3 +148,59 @@ tokens.border.focus.borderImage;
 Gradient borders use CSS `border-image`. The optional `fallbackColour`,
 `slice`, and `repeat` settings control the conventional fallback and the
 corresponding border-image shorthand values.
+
+## Typography
+
+Use `createTypography` to compose related CSS typography declarations into a
+token. It does not download or register font files. The consuming application
+must make custom fonts available, for example with `@font-face`:
+
+```css
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+```
+
+Font loading can instead be handled by a font provider, framework loader, or
+system font stack. Once available, a font family can be stored as a normal
+token and composed into typography:
+
+```ts
+import { createTypography, defineTokens } from '@jecfe/token-forge';
+
+const font = defineTokens({
+  family: {
+    body: 'Inter, Arial, sans-serif',
+  },
+});
+
+const tokens = defineTokens({
+  typography: {
+    body: createTypography({
+      fontFamily: font.family.body,
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+      letterSpacing: '0.01em',
+    }),
+  },
+});
+
+tokens.typography.body;
+// {
+//   fontFamily: 'Inter, Arial, sans-serif',
+//   fontSize: '1rem',
+//   fontWeight: 400,
+//   lineHeight: 1.5,
+//   letterSpacing: '0.01em',
+// }
+```
+
+The `fontFamily` option also accepts an ordered list such as
+`['Inter', 'Arial', 'sans-serif']` and joins it into a CSS font-family value.
+CSS custom properties can be used for any string value. Numeric font weights
+must be between `1` and `1000`, and numeric line heights must be non-negative.

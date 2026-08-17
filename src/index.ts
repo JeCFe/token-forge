@@ -4,6 +4,7 @@ export { createResponsive } from './tokens/createResponsive.ts';
 export { createSize } from './tokens/createSize.ts';
 export { createGradient } from './tokens/createGradient.ts';
 export { createBorder } from './tokens/createBorder.ts';
+export { createTypography } from './tokens/createTypography.ts';
 export type {
   BorderOptions,
   BorderValue,
@@ -22,4 +23,6 @@ export type {
   SizeValue,
   Tokens,
   TokenValue,
+  TypographyOptions,
+  TypographyValue,
 } from './tokens/types.ts';

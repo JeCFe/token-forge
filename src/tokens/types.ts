@@ -105,6 +105,29 @@ export type BorderValue = {
   borderImage?: string;
 };
 
+/** Options accepted by {@link createTypography}. */
+export type TypographyOptions = {
+  /** A complete CSS value or an ordered list of font families. */
+  fontFamily: string | readonly string[];
+  /** A CSS font size, such as `1rem` or `var(--font-size-body)`. */
+  fontSize: string;
+  /** A CSS font weight keyword, custom property, or numeric weight. */
+  fontWeight: string | number;
+  /** A CSS line height or a unitless numeric multiplier. */
+  lineHeight: string | number;
+  /** A CSS letter-spacing value. */
+  letterSpacing?: string;
+};
+
+/** CSS declarations represented by a typography token. */
+export type TypographyValue = {
+  fontFamily: string;
+  fontSize: string;
+  fontWeight: string | number;
+  lineHeight: string | number;
+  letterSpacing?: string;
+};
+
 /** A base token value with optional overrides at named breakpoints. */
 export type ResponsiveValues<TBreakpoints extends Breakpoints = Breakpoints> = {
   base: TokenValue;
