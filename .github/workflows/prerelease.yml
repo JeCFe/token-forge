@@ -1,0 +1,55 @@
+name: Publish prerelease
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate branch
+        run: |
+          npm run format:check
+          npm run lint
+          npm run typecheck
+          npm test
+          npm run build
+
+      - name: Derive prerelease channel
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          CHANNEL=$(printf '%s' "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9-]+/-/g; s/^-+//; s/-+$//' | cut -c1-50)
+          if [ -z "$CHANNEL" ]; then
+            echo "Unable to derive a prerelease channel from the branch name" >&2
+            exit 1
+          fi
+          echo "RELEASE_CHANNEL=$CHANNEL" >> "$GITHUB_ENV"
+          echo "Using prerelease channel: $CHANNEL"
+
+      - name: Publish prerelease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_BRANCH: ${{ github.ref_name }}
+        run: npx --no -- semantic-release

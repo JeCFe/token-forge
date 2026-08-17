@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  issues: write
+  packages: write
+  pull-requests: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate main
+        run: |
+          npm run format:check
+          npm run lint
+          npm run typecheck
+          npm test
+          npm run build
+
+      - name: Release stable package
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_MODE: stable
+        run: npx --no -- semantic-release
+
+      - name: Find merged branch
+        id: merged-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_JSON=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0] // empty')
+          if [ -z "$PR_JSON" ]; then
+            echo "No merged pull request found for this commit; skipping prerelease cleanup."
+            exit 0
+          fi
+          BRANCH=$(printf '%s' "$PR_JSON" | jq -r '.head.ref')
+          CHANNEL=$(printf '%s' "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9-]+/-/g; s/^-+//; s/-+$//' | cut -c1-50)
+          echo "channel=$CHANNEL" >> "$GITHUB_OUTPUT"
+
+      - name: Delete merged branch prereleases
+        if: steps.merged-pr.outputs.channel != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANNEL: ${{ steps.merged-pr.outputs.channel }}
+        run: |
+          gh api --paginate "users/${GITHUB_REPOSITORY_OWNER}/packages/npm/token-forge/versions" --jq ".[] | select(.metadata.container.tags[]? == \"$CHANNEL\") | .id" | while read -r VERSION_ID; do
+            gh api --method DELETE "users/${GITHUB_REPOSITORY_OWNER}/packages/npm/token-forge/versions/${VERSION_ID}"
+          done
