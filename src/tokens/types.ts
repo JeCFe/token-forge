@@ -1,3 +1,5 @@
+import type * as CSS from 'csstype';
+
 /** A primitive value that can be emitted as a CSS custom-property value. */
 export type TokenValue = string | number;
 
@@ -69,6 +71,39 @@ export type GradientOptions =
   | LinearGradientOptions
   | RadialGradientOptions
   | ConicGradientOptions;
+
+type BaseBorderOptions = {
+  width: string;
+  /** Defaults to `solid`. */
+  style?: CSS.Property.BorderTopStyle;
+};
+
+/** Options for creating a conventional colour border. */
+export type ColourBorderOptions = BaseBorderOptions & {
+  colour: string;
+  gradient?: never;
+};
+
+/** Options for creating a border drawn from a CSS gradient. */
+export type GradientBorderOptions = BaseBorderOptions & {
+  gradient: GradientValue;
+  colour?: never;
+  /** Colour used if the border image cannot be displayed. */
+  fallbackColour?: string;
+  /** CSS `border-image-slice` value. Defaults to `1`. */
+  slice?: string;
+  /** CSS `border-image-repeat` value. */
+  repeat?: string;
+};
+
+/** Options accepted by {@link createBorder}. */
+export type BorderOptions = ColourBorderOptions | GradientBorderOptions;
+
+/** CSS declarations needed to render a conventional or gradient border. */
+export type BorderValue = {
+  border: string;
+  borderImage?: string;
+};
 
 /** A base token value with optional overrides at named breakpoints. */
 export type ResponsiveValues<TBreakpoints extends Breakpoints = Breakpoints> = {

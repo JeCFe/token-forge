@@ -106,3 +106,40 @@ least one stop.
 Gradient configuration remains typed as strings so the library does not
 duplicate the CSS grammar. This also leaves custom properties and new CSS
 syntax available without requiring library updates.
+
+## Borders
+
+Use `createBorder` to create conventional or gradient border declarations. It
+always returns a `border` value and adds `borderImage` when a gradient is used:
+
+```ts
+import { createBorder, createGradient, defineTokens } from '@jecfe/token-forge';
+
+const gradient = createGradient({
+  type: 'linear',
+  direction: 'to right',
+  stops: ['#3366ff', '#8a2be2'],
+});
+
+const tokens = defineTokens({
+  border: {
+    subtle: createBorder({
+      width: '1px',
+      colour: '#d9d9d9',
+    }),
+    focus: createBorder({
+      width: '2px',
+      gradient,
+    }),
+  },
+});
+
+tokens.border.subtle.border; // '1px solid #d9d9d9'
+tokens.border.focus.border; // '2px solid transparent'
+tokens.border.focus.borderImage;
+// 'linear-gradient(to right, #3366ff, #8a2be2) 1'
+```
+
+Gradient borders use CSS `border-image`. The optional `fallbackColour`,
+`slice`, and `repeat` settings control the conventional fallback and the
+corresponding border-image shorthand values.
