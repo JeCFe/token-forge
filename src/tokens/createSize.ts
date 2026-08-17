@@ -1,11 +1,6 @@
+import { formatNumber } from '../utils/number.ts';
 import { requireFiniteNumber } from '../validation/requireFiniteNumber.ts';
 import type { SizeValue } from './types.ts';
-
-/** Formats a finite number without floating-point noise or negative zero. */
-const formatNumber = (value: number): `${number}` => {
-  const rounded = Number(value.toPrecision(15));
-  return (Object.is(rounded, -0) ? '0' : String(rounded)) as `${number}`;
-};
 
 /**
  * Creates a size helper using the number of pixels equal to one rem.
