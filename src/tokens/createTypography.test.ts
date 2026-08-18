@@ -38,6 +38,18 @@ describe('createTypography', () => {
     });
   });
 
+  it('creates a font-size scale without imposing a family or weight', () => {
+    expect(
+      createTypography({
+        fontSize: '1rem',
+        lineHeight: 1.5,
+      }),
+    ).toEqual({
+      fontSize: '1rem',
+      lineHeight: 1.5,
+    });
+  });
+
   it('returns values that can be composed into tokens', () => {
     const tokens = defineTokens({
       typography: {
@@ -56,11 +68,11 @@ describe('createTypography', () => {
 
   it('exposes consumer-friendly value types', () => {
     expectTypeOf<TypographyOptions['fontFamily']>().toEqualTypeOf<
-      string | readonly string[]
+      string | readonly string[] | undefined
     >();
     expectTypeOf<TypographyOptions['fontSize']>().toEqualTypeOf<string>();
     expectTypeOf<TypographyOptions['fontWeight']>().toEqualTypeOf<
-      string | number
+      string | number | undefined
     >();
     expectTypeOf<TypographyOptions['lineHeight']>().toEqualTypeOf<
       string | number

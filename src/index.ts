@@ -12,6 +12,7 @@ export type {
   Breakpoints,
   ColourBorderOptions,
   ConicGradientOptions,
+  FontFamily,
   GradientOptions,
   GradientBorderOptions,
   GradientStop,

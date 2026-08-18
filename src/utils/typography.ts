@@ -1,10 +1,8 @@
 import { requireValue } from '../validation/requireValue.ts';
-import type { TypographyOptions } from '../tokens/types.ts';
+import type { FontFamily } from '../tokens/types.ts';
 
 /** Formats one font-family value or an ordered font-family list. */
-export const formatFontFamily = (
-  fontFamily: TypographyOptions['fontFamily'],
-): string => {
+export const formatFontFamily = (fontFamily: FontFamily): string => {
   const families =
     typeof fontFamily === 'string' ? [fontFamily] : [...fontFamily];
 

@@ -20,22 +20,30 @@ import type { TypographyOptions, TypographyValue } from './types.ts';
 export const createTypography = (
   options: TypographyOptions,
 ): TypographyValue => {
-  const fontWeight = requireValue(options.fontWeight, 'fontWeight');
-  if (typeof fontWeight === 'number' && (fontWeight < 1 || fontWeight > 1000)) {
-    throw new RangeError('fontWeight must be between 1 and 1000.');
-  }
-
   const lineHeight = requireValue(options.lineHeight, 'lineHeight');
   if (typeof lineHeight === 'number' && lineHeight < 0) {
     throw new RangeError('lineHeight must not be negative.');
   }
 
   const typography: TypographyValue = {
-    fontFamily: formatFontFamily(options.fontFamily),
     fontSize: requireValue(options.fontSize, 'fontSize'),
-    fontWeight,
     lineHeight,
   };
+
+  if (options.fontFamily !== undefined) {
+    typography.fontFamily = formatFontFamily(options.fontFamily);
+  }
+
+  if (options.fontWeight !== undefined) {
+    const fontWeight = requireValue(options.fontWeight, 'fontWeight');
+    if (
+      typeof fontWeight === 'number' &&
+      (fontWeight < 1 || fontWeight > 1000)
+    ) {
+      throw new RangeError('fontWeight must be between 1 and 1000.');
+    }
+    typography.fontWeight = fontWeight;
+  }
 
   if (options.letterSpacing !== undefined) {
     typography.letterSpacing = requireValue(

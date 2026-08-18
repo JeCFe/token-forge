@@ -105,14 +105,16 @@ export type BorderValue = {
   borderImage?: string;
 };
 
+/** A complete CSS value or an ordered list of font families. */
+export type FontFamily = string | readonly string[];
+
 /** Options accepted by {@link createTypography}. */
 export type TypographyOptions = {
-  /** A complete CSS value or an ordered list of font families. */
-  fontFamily: string | readonly string[];
+  fontFamily?: FontFamily;
   /** A CSS font size, such as `1rem` or `var(--font-size-body)`. */
   fontSize: string;
   /** A CSS font weight keyword, custom property, or numeric weight. */
-  fontWeight: string | number;
+  fontWeight?: string | number;
   /** A CSS line height or a unitless numeric multiplier. */
   lineHeight: string | number;
   /** A CSS letter-spacing value. */
@@ -121,9 +123,9 @@ export type TypographyOptions = {
 
 /** CSS declarations represented by a typography token. */
 export type TypographyValue = {
-  fontFamily: string;
+  fontFamily?: string;
   fontSize: string;
-  fontWeight: string | number;
+  fontWeight?: string | number;
   lineHeight: string | number;
   letterSpacing?: string;
 };
