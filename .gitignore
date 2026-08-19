@@ -4,3 +4,4 @@ coverage/
 .npm/
 *.tsbuildinfo
 .npmrc
+examples/

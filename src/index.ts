@@ -1,4 +1,5 @@
 export { defineTokens } from './tokens/defineTokens.ts';
+export { alias, token } from './tokens/token.ts';
 export { defineBreakpoints } from './tokens/defineBreakpoints.ts';
 export { createResponsive } from './tokens/createResponsive.ts';
 export { createSize } from './tokens/createSize.ts';
@@ -22,6 +23,9 @@ export type {
   RadialGradientOptions,
   ResponsiveValues,
   SizeValue,
+  Token,
+  TokenAlias,
+  TokenReference,
   Tokens,
   TokenValue,
   TypographyOptions,

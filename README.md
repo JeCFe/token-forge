@@ -1,7 +1,5 @@
 # @jecfe/token-forge
 
-Convert TypeScript design-token objects into CSS custom properties.
-
 ## Recommended usage
 
 Use `defineTokens` when creating tokens. It validates the supported shape at
@@ -48,6 +46,34 @@ const tokens: Tokens = {
 
 Prefer `defineTokens` for normal usage because it retains more specific
 property names and gives better editor autocomplete.
+
+## Explicit tokens and aliases
+
+Use `token()` when the relationship between primitive and semantic tokens
+needs to be retained. `alias()` accepts the token itself, so references are
+type-safe and refactor-friendly without string paths:
+
+```ts
+import { alias, defineTokens, token } from '@jecfe/token-forge';
+
+const palette = defineTokens({
+  blue: {
+    500: token('#3366ff'),
+  },
+});
+
+const tokens = defineTokens({
+  primary: alias(palette.blue['500']),
+});
+
+tokens.primary.value; // '#3366ff'
+tokens.primary.target === palette.blue['500']; // true
+```
+
+Aliases can target other aliases. Their `value` always resolves through the
+target, while `target` retains each link in the relationship. Raw values remain
+supported, so explicit nodes can be introduced only where relationship data is
+useful.
 
 ## Size units
 
@@ -202,5 +228,7 @@ tokens.typography.body;
 
 The `fontFamily` option also accepts an ordered list such as
 `['Inter', 'Arial', 'sans-serif']` and joins it into a CSS font-family value.
-CSS custom properties can be used for any string value. Numeric font weights
-must be between `1` and `1000`, and numeric line heights must be non-negative.
+Both `fontFamily` and `fontWeight` are optional, so a typography token can also
+represent a font-size scale containing only `fontSize` and `lineHeight`. CSS
+custom properties can be used for any string value. Numeric font weights must
+be between `1` and `1000`, and numeric line heights must be non-negative.

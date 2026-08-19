@@ -3,6 +3,23 @@ import type * as CSS from 'csstype';
 /** A primitive value that can be emitted as a CSS custom-property value. */
 export type TokenValue = string | number;
 
+/** An explicit design token containing a value. */
+export type Token<T = TokenValue> = {
+  readonly kind: 'token';
+  readonly value: T;
+};
+
+/** A token or alias that can be used as the target of another alias. */
+export type TokenReference<T = TokenValue> = Token<T> | TokenAlias<T>;
+
+/** An explicit reference to another token or alias. */
+export type TokenAlias<T = TokenValue> = {
+  readonly kind: 'alias';
+  readonly target: TokenReference<T>;
+  /** The value resolved from the target. */
+  readonly value: T;
+};
+
 /** A breakpoint value used to build a media-query condition. */
 export type BreakpointValue = string;
 
@@ -141,5 +158,5 @@ export type ResponsiveValues<TBreakpoints extends Breakpoints = Breakpoints> = {
  * Nested keys are joined with hyphens when converted to CSS custom properties.
  */
 export type Tokens = {
-  [name: string]: TokenValue | Tokens;
+  [name: string]: TokenValue | TokenReference<unknown> | Tokens;
 };
