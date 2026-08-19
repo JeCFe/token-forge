@@ -1,0 +1,1 @@
+export { createResponsive } from './createResponsive';
