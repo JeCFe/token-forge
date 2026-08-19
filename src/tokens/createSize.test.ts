@@ -11,10 +11,11 @@ describe('createSize', () => {
     expect(size(24)).toEqual({ px: '24px', rem: '1.5rem' });
   });
 
-  it('supports zero and decimal sizes', () => {
+  it('supports zero, negative, and decimal sizes', () => {
     const size = createSize(16);
 
     expect(size(0)).toEqual({ px: '0px', rem: '0rem' });
+    expect(size(-8)).toEqual({ px: '-8px', rem: '-0.5rem' });
     expect(size(1)).toEqual({ px: '1px', rem: '0.0625rem' });
   });
 
@@ -60,7 +61,7 @@ describe('createSize', () => {
     },
   );
 
-  it.each([-1, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY])(
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY])(
     'rejects an invalid pixel size of %s',
     (pixels) => {
       const size = createSize(16);

@@ -3,6 +3,23 @@ import type * as CSS from 'csstype';
 /** A primitive value that can be emitted as a CSS custom-property value. */
 export type TokenValue = string | number;
 
+/** An explicit design token containing a value. */
+export type Token<T = TokenValue> = {
+  readonly kind: 'token';
+  readonly value: T;
+};
+
+/** A token or alias that can be used as the target of another alias. */
+export type TokenReference<T = TokenValue> = Token<T> | TokenAlias<T>;
+
+/** An explicit reference to another token or alias. */
+export type TokenAlias<T = TokenValue> = {
+  readonly kind: 'alias';
+  readonly target: TokenReference<T>;
+  /** The value resolved from the target. */
+  readonly value: T;
+};
+
 /** A breakpoint value used to build a media-query condition. */
 export type BreakpointValue = string;
 
@@ -105,6 +122,31 @@ export type BorderValue = {
   borderImage?: string;
 };
 
+/** A complete CSS value or an ordered list of font families. */
+export type FontFamily = string | readonly string[];
+
+/** Options accepted by {@link createTypography}. */
+export type TypographyOptions = {
+  fontFamily?: FontFamily;
+  /** A CSS font size, such as `1rem` or `var(--font-size-body)`. */
+  fontSize: string;
+  /** A CSS font weight keyword, custom property, or numeric weight. */
+  fontWeight?: string | number;
+  /** A CSS line height or a unitless numeric multiplier. */
+  lineHeight: string | number;
+  /** A CSS letter-spacing value. */
+  letterSpacing?: string;
+};
+
+/** CSS declarations represented by a typography token. */
+export type TypographyValue = {
+  fontFamily?: string;
+  fontSize: string;
+  fontWeight?: string | number;
+  lineHeight: string | number;
+  letterSpacing?: string;
+};
+
 /** A base token value with optional overrides at named breakpoints. */
 export type ResponsiveValues<TBreakpoints extends Breakpoints = Breakpoints> = {
   base: TokenValue;
@@ -116,5 +158,5 @@ export type ResponsiveValues<TBreakpoints extends Breakpoints = Breakpoints> = {
  * Nested keys are joined with hyphens when converted to CSS custom properties.
  */
 export type Tokens = {
-  [name: string]: TokenValue | Tokens;
+  [name: string]: TokenValue | TokenReference<unknown> | Tokens;
 };

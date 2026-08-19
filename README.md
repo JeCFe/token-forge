@@ -1,7 +1,5 @@
 # @jecfe/token-forge
 
-Convert TypeScript design-token objects into CSS custom properties.
-
 ## Recommended usage
 
 Use `defineTokens` when creating tokens. It validates the supported shape at
@@ -49,6 +47,34 @@ const tokens: Tokens = {
 Prefer `defineTokens` for normal usage because it retains more specific
 property names and gives better editor autocomplete.
 
+## Explicit tokens and aliases
+
+Use `token()` when the relationship between primitive and semantic tokens
+needs to be retained. `alias()` accepts the token itself, so references are
+type-safe and refactor-friendly without string paths:
+
+```ts
+import { alias, defineTokens, token } from '@jecfe/token-forge';
+
+const palette = defineTokens({
+  blue: {
+    500: token('#3366ff'),
+  },
+});
+
+const tokens = defineTokens({
+  primary: alias(palette.blue['500']),
+});
+
+tokens.primary.value; // '#3366ff'
+tokens.primary.target === palette.blue['500']; // true
+```
+
+Aliases can target other aliases. Their `value` always resolves through the
+target, while `target` retains each link in the relationship. Raw values remain
+supported, so explicit nodes can be introduced only where relationship data is
+useful.
+
 ## Size units
 
 Use `createSize` to define how many pixels equal one rem and create size values
@@ -67,6 +93,9 @@ const sizes = defineTokens({
 sizes['100'].px; // '16px'
 sizes['100'].rem; // '1rem'
 ```
+
+Size inputs may be positive, zero, or negative. The configured pixel-to-rem
+base must remain positive.
 
 ## Gradients
 
@@ -145,3 +174,61 @@ tokens.border.focus.borderImage;
 Gradient borders use CSS `border-image`. The optional `fallbackColour`,
 `slice`, and `repeat` settings control the conventional fallback and the
 corresponding border-image shorthand values.
+
+## Typography
+
+Use `createTypography` to compose related CSS typography declarations into a
+token. It does not download or register font files. The consuming application
+must make custom fonts available, for example with `@font-face`:
+
+```css
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+```
+
+Font loading can instead be handled by a font provider, framework loader, or
+system font stack. Once available, a font family can be stored as a normal
+token and composed into typography:
+
+```ts
+import { createTypography, defineTokens } from '@jecfe/token-forge';
+
+const font = defineTokens({
+  family: {
+    body: 'Inter, Arial, sans-serif',
+  },
+});
+
+const tokens = defineTokens({
+  typography: {
+    body: createTypography({
+      fontFamily: font.family.body,
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+      letterSpacing: '0.01em',
+    }),
+  },
+});
+
+tokens.typography.body;
+// {
+//   fontFamily: 'Inter, Arial, sans-serif',
+//   fontSize: '1rem',
+//   fontWeight: 400,
+//   lineHeight: 1.5,
+//   letterSpacing: '0.01em',
+// }
+```
+
+The `fontFamily` option also accepts an ordered list such as
+`['Inter', 'Arial', 'sans-serif']` and joins it into a CSS font-family value.
+Both `fontFamily` and `fontWeight` are optional, so a typography token can also
+represent a font-size scale containing only `fontSize` and `lineHeight`. CSS
+custom properties can be used for any string value. Numeric font weights must
+be between `1` and `1000`, and numeric line heights must be non-negative.
