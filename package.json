@@ -1,6 +1,6 @@
 {
   "name": "@jecfe/token-forge",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Type-safe utilities for defining and composing design tokens.",
   "type": "module",
   "main": "./dist/index.cjs",
