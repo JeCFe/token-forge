@@ -20,17 +20,6 @@ const tokens = defineTokens({
 });
 ```
 
-Nested token names are intended to become CSS custom-property names:
-
-```css
-:root {
-  --colour-primary: #3366ff;
-  --colour-text: #111111;
-  --spacing-small: 8px;
-  --spacing-large: 24px;
-}
-```
-
 `Tokens` is also exported for cases where an explicit annotation is
 useful:
 
