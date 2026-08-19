@@ -1,6 +1,6 @@
 import type * as CSS from 'csstype';
 
-/** A primitive value that can be emitted as a CSS custom-property value. */
+/** A primitive design-token value. */
 export type TokenValue = string | number;
 
 /** An explicit design token containing a value. */
@@ -154,8 +154,6 @@ export type ResponsiveValues<TBreakpoints extends Breakpoints = Breakpoints> = {
 
 /**
  * A recursively nested collection of tokens.
- *
- * Nested keys are joined with hyphens when converted to CSS custom properties.
  */
 export type Tokens = {
   [name: string]: TokenValue | TokenReference<unknown> | Tokens;
