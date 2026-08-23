@@ -1,8 +1,14 @@
+import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vitest/config';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   plugins: [dts({ rollupTypes: true })],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   build: {
     lib: {
       entry: 'src/index.ts',

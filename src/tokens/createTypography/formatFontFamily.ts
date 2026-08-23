@@ -1,0 +1,16 @@
+import type { FontFamily } from '@/tokens';
+import { requireValue } from '@/validation';
+
+/** Formats one font-family value or an ordered font-family list. */
+export const formatFontFamily = (fontFamily: FontFamily): string => {
+  const families =
+    typeof fontFamily === 'string' ? [fontFamily] : [...fontFamily];
+
+  if (families.length === 0) {
+    throw new RangeError('fontFamily requires at least one value.');
+  }
+
+  return families
+    .map((family, index) => requireValue(family, `fontFamily[${index}]`))
+    .join(', ');
+};
