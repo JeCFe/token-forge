@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/JeCFe/token-forge/compare/v1.1.0...v1.2.0) (2026-08-23)
+
+
+### Features
+
+* add alias spport ([be94955](https://github.com/JeCFe/token-forge/commit/be94955869c3debcec45729316ffad523694cb87))
+
 # [1.1.0](https://github.com/JeCFe/token-forge/compare/v1.0.0...v1.1.0) (2026-08-19)
 
 
