@@ -64,6 +64,32 @@ target, while `target` retains each link in the relationship. Raw values remain
 supported, so explicit nodes can be introduced only where relationship data is
 useful.
 
+Use `isToken()` and `isAlias()` when inspecting an unknown value or walking a
+token collection. Both functions narrow the value to the corresponding
+TypeScript type:
+
+```ts
+import { isAlias, isToken } from '@jecfe/token-forge';
+
+if (isToken(value)) {
+  console.log(value.value);
+}
+
+if (isAlias(value)) {
+  console.log(value.target);
+}
+```
+
+`resolveToken()` accepts either a token or an alias and returns its final value,
+including through alias chains. It reports malformed targets and circular alias
+relationships with an error:
+
+```ts
+import { resolveToken } from '@jecfe/token-forge';
+
+resolveToken(tokens.primary); // '#3366ff'
+```
+
 ## Size units
 
 Use `createSize` to define how many pixels equal one rem and create size values

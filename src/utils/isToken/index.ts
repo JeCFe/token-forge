@@ -1,0 +1,1 @@
+export { isToken } from './isToken';

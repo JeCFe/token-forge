@@ -1,4 +1,5 @@
 import type { TokenAlias, TokenReference } from '@/tokens';
+import { resolveToken } from '@/utils/resolveToken';
 
 /**
  * Creates a design-token alias while retaining the token it refers to.
@@ -10,6 +11,6 @@ export const alias = <T>(target: TokenReference<T>): TokenAlias<T> => ({
   kind: 'alias',
   target,
   get value() {
-    return target.value;
+    return resolveToken(target);
   },
 });

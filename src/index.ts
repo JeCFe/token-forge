@@ -31,4 +31,4 @@ export {
   type TypographyOptions,
   type TypographyValue,
 } from '@/tokens';
-export { alias } from '@/utils';
+export { alias, isAlias, isToken, resolveToken } from '@/utils';
