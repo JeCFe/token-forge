@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/JeCFe/token-forge/compare/v1.2.0...v1.3.0) (2026-08-23)
+
+
+### Features
+
+* alais support ([#4](https://github.com/JeCFe/token-forge/issues/4)) ([7cd4d85](https://github.com/JeCFe/token-forge/commit/7cd4d85c7b16bbfb166005345322b28405411b6d))
+
 # [1.2.0](https://github.com/JeCFe/token-forge/compare/v1.1.0...v1.2.0) (2026-08-23)
 
 
